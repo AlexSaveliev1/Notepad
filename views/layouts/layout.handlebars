@@ -1,1 +1,59 @@
-Main layout page
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Notepad</title>
+    <link rel="shortcut icon" href="public/icons/notepad.png"> <!-- Notepad Icon -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"><!-- Bootstrap CDN-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script> <!-- jQuery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script> <!-- AngularJS CDN -->
+    <meta name="description" content="Notepad">
+
+
+    <style>
+        body{
+            margin-top: 1%; /* Top margin*/
+        }
+    </style>
+    <link rel="stylesheet" href="css/style.css"> <!-- Styles -->
+</head>
+<body>
+<div class="container" ng-app="date" ng-controller="myCtrl">
+    <div class="header clearfix">
+        <nav>
+            <ul class="nav nav-pills pull-right">
+                <li role="presentation"><a href="/">Dashboard</a></li>
+                <li role="presentation"><a href="/users/login">Login</a></li>
+                <li role="presentation"><a href="/users/register">Register</a></li>
+                <li role="presentation"><a href="/users/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <h3 class="text-muted">Notepad <span ng-bind="year"></span></h3>
+    </div>
+
+    <script>
+        var date=angular.module('date',[]);
+        date.controller('myCtrl',function ($scope) {
+            $scope.year=new Date().getFullYear();
+            $scope.t=1;
+        })
+    </script>
+    <div class="jumbotron">
+        <h1>Jumbotron heading</h1>
+        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        <p><a class="btn btn-lg btn-success" href="#" role="button">Sign up today</a></p>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{{body}}}
+        </div>
+    </div>
+    <br>
+    <footer class="footer">
+        <p>&copy; <span ng-bind="year"></span> Notepad, Inc.</p>
+    </footer>
+
+</div> <!-- /container -->
+</body>
+</html>

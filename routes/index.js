@@ -1,15 +1,21 @@
 var express = require('express');
 var router = express.Router();
-var uname=require('./users.js')
 
 // Get Homepage
-router.get('/', ensureAuthenticated, function(req, res){
-    res.render('index');
+router.get('/', isLogined, function(req, res){
+    console.log(req.body.titleNote)
+    res.render('index',{
+        pass:req.session.passport.user
+
+    })
+
+    req.flash('test','it work')
+
 });
 
-function ensureAuthenticated(req, res, next){
+function isLogined(req, res, next){ // Check if user logined then
     if(req.isAuthenticated()){
-
+        req.flash('success_msg',"Hello")
         return next();
     } else {
         req.flash('error_msg','You are not logged in');

@@ -1,5 +1,5 @@
-var express = require('express');
-var path = require('path');
+var express = require('express'); // server module
+var path = require('path'); // module that provides utilities for working with file and directory paths.
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs = require('express-handlebars');
@@ -19,8 +19,17 @@ var db = mongoose.connection;
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+
 // Init App
-var app = express();
+var app = express(); //
+
+
+// Set Port
+app.set('port', (process.env.PORT || 5000)); // Set port app to variable
+app.listen(app.get('port'), function(){ // Let us use variable from environment
+    console.log('Server started on port '+app.get('port'));
+});
+
 
 // View Engine
 app.set('views', path.join(__dirname, 'views')); // Set directive ( folder ) when it will search files to show
@@ -45,6 +54,7 @@ app.use(session({
 // Passport init
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // Express Validator
 app.use(expressValidator({
@@ -81,9 +91,3 @@ app.use(function (req, res, next) {
 app.use('/', routes);
 app.use('/users', users);
 
-// Set Port
-app.set('port', (process.env.PORT || 5000)); // Set port app
-
-app.listen(app.get('port'), function(){
-    console.log('Server started on port '+app.get('port'));
-});

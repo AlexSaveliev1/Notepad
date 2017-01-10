@@ -1,1 +1,25 @@
-Will be note
+<div class="col-md-12">
+index {{pass}}
+    name <!-- find by user db object -->
+<div class="row">
+    <div class="col-md-4">
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#">Create a note</a></li>
+            <li><a href="#">My notes <span class="badge">7</span></a></li>
+            <li><a href="#">About us</a></li>
+        </ul></div>
+    <div class="col-md-8">
+        <form method="post" action="/users/index" name="noteForm" >
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Title <span class="glyphicon glyphicon-bookmark"></span></span>
+                <input id="msg" type="text" class="form-control" name="titleNote" placeholder="Enter the title for note">
+            </div>
+            <label for="text">Note:</label>
+            <textarea class="form-control" rows="5"  name="nText" id="text">asdasdasdasd</textarea>
+            <br>
+            <button type="submit" class="btn btn-default" style="float:right;">Record note <span class="glyphicon glyphicon-pencil"></span></button>
+        </div>
+            </form>
+    </div>
+</div></div>

@@ -3,28 +3,63 @@ var router = express.Router();
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-var User = require('../models/user');
+var flag=true;
+
+var User = require('../modelsDB/user');
+var Note = require('../modelsDB/note');
+router.post('/index', function(req, res){ // sent data from register form
+    var titleNote = req.body.titleNote;
+    var nText = req.body.nText;
+/*
+    // Validation for register form
+    req.checkBody('', 'Name field is empty').notEmpty();
+    req.checkBody('email', 'Email is required').notEmpty();
+
+    var errors = req.validationErrors();
+
+    if(errors){
+        res.render('register',{
+            errors:errors
+        });
+    } else {*/
+        var newNote = new Note({ // new Document in collection export User
+            title: titleNote,
+            text:nText,
+            usernameId:req.session.passport.user
+        });
+
+        Note.createNote(newNote, function(err, user){
+            if(err) throw err;
+            console.log('succ'); // Print to console user object
+        });
+
+        req.flash('success_msg', 'You are registered and can now login');
+
+        res.redirect('/');
+    }
+);
+
 
 // Register
 router.get('/register', function(req, res){
-    res.render('register');
+    res.render('register',{flag:flag}); // Throw register layout into the body
 });
 
 // Login
 router.get('/login', function(req, res){
-    res.render('login');
+    res.render('login'); // Throw login layout into the body
 });
 
 // Register User
-router.post('/register', function(req, res){
+router.post('/register', function(req, res){ // sent data from register form
     var name = req.body.name;
     var email = req.body.email;
     var username = req.body.username;
     var password = req.body.password;
     var password2 = req.body.password2;
 
-    // Validation
-    req.checkBody('name', 'Name is required').notEmpty();
+    // Validation for register form
+    req.checkBody('name', 'Name field is empty').notEmpty();
     req.checkBody('email', 'Email is required').notEmpty();
     req.checkBody('email', 'Email is not valid').isEmail();
     req.checkBody('username', 'Username is required').notEmpty();
@@ -38,16 +73,16 @@ router.post('/register', function(req, res){
             errors:errors
         });
     } else {
-        var newUser = new User({
+        var newUser = new User({ // new Document in collection export User
             name: name,
             email:email,
             username: username,
-            password: password
+            password: password,
         });
 
         User.createUser(newUser, function(err, user){
             if(err) throw err;
-            console.log(user);
+            console.log(user); // Print to console user object
         });
 
         req.flash('success_msg', 'You are registered and can now login');
@@ -58,11 +93,8 @@ router.post('/register', function(req, res){
 
 passport.use(new LocalStrategy(
     function(username, password, done) {
-        console.log('sadasda'+username)
-        console.log(LocalStrategy.username)
         User.getUserByUsername(username, function(err, user){
             if(err) throw err;
-            console.log('hello '+username) // Catch username
             if(!user){
                 return done(null, false, {message: 'Unknown User'});
             }
@@ -77,18 +109,15 @@ passport.use(new LocalStrategy(
             });
         });
     }));
-
+console.log()
 
 passport.serializeUser(function(user, done) {
     done(null, user.id);
 });
 
 passport.deserializeUser(function(res, id, done) {
-    console.log('id user'+id) // Catch user ID
-    
     User.getUserById(id, function(err, user){
         done(err, user);
-
     });
 
 });
